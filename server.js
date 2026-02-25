@@ -5,7 +5,6 @@ import morgan from 'morgan'
 import dotenv from 'dotenv'
 import fs from 'node:fs/promises'
 import { connectDB } from './config/db.js'
-import registrationRoutes from './src/routes/registrationRoutes.js'
 import { errorMiddleware } from './src/utils/error.js'
 import cookieParser from 'cookie-parser'
 import authRoute from './src/routes/authRoutes.js'
@@ -50,8 +49,7 @@ app.get('/health', (_req, res) => {
   res.send({ status: 'ok', uptime: process.uptime() })
 })
 
-// API routes
-app.use('/form', registrationRoutes)
+// API route
 app.use("/auth" , authRoute)
 
 app.get("/", (req, res) => {

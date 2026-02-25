@@ -1,5 +1,5 @@
 // emailTemplate.js
-export const generateTemplate = (userName, userEmail) => {
+export const generateTemplate = (userName, userEmail, webhookUrl) => {
   return `
     <div style="
       font-family: Arial, Helvetica, sans-serif;
@@ -14,34 +14,33 @@ export const generateTemplate = (userName, userEmail) => {
       <h2 style="color: #1a1a1a;">Dear ${userName},</h2>
 
       <p>
-        Thank you for registering for <strong>ARTTICON 2026</strong>.
+        Your registration has been successfully completed.
       </p>
 
       <p>
-        We have successfully received your registration using the email address:
-        <br />
-        <strong>${userEmail}</strong>
+        <strong>Account Email:</strong> ${userEmail}
       </p>
 
-      <p>
-        Our team will review your details and confirm your registration shortly.
-      </p>
+      <div style="
+        background-color: #f9f9f9;
+        padding: 15px;
+        border: 1px dashed #cccccc;
+        margin: 20px 0;
+      ">
+        <p style="margin-top: 0; font-weight: bold;">Your Webhook URL:</p>
+        <code style="color: #007bff; word-break: break-all;">${webhookUrl}</code>
+      </div>
 
       <p>
-        We look forward to welcoming you to
-        <strong>ARTTICON 2026, Rishikesh</strong>.
+        You can now use this URL to integrate your services. Your subscription is currently being processed.
       </p>
 
       <br />
 
       <p>
         With warm regards,<br />
-        <strong>Ashwani Jaiswal</strong><br />
-        Organizing Secretary – ARTTICON 2026<br />
-        Sr. Radiation Therapist<br />
-        AIIMS Rishikesh<br />
-        Mob: (+91) 9454883456<br />
-        E-mail: <a href="mailto:artticon2026@gmail.com">artticon2026@gmail.com</a>
+        <strong>Support Team</strong><br />
+        Registration Management System
       </p>
     </div>
   `;

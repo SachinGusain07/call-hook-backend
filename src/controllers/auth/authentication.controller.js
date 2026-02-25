@@ -4,6 +4,13 @@ import ErrorHandler from "../../utils/ErrorHandler.js";
 import { generateAccessAndRefreshTokens } from "../../utils/jwtToken.js";
 import bcrypt from  "bcryptjs" 
 
+
+
+
+
+
+
+
 const setAuthCookies = (res, accessToken, refreshToken) => {
   // console.log(  accessToken, refreshToken, "reached")
   const cookieOptions = {
@@ -85,3 +92,6 @@ export const refreshAccessToken = asyncHandler(async (req, res, next) => {
     refreshToken: tokens.refreshToken
   });
 });
+
+
+

@@ -1,0 +1,105 @@
+
+import { sendMail } from "../../utils/nodemailer/sendEmail.js"
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid"; // Import UUID generator
+import { Registration } from "../../models/Registration.js";
+
+export const generateWebhookData = (name) => {
+  const cleanName = name.toLowerCase().replace(/[^a-z0-9]/g, "-"); 
+  const uniqueId = `${cleanName}-${uuidv4()}`;
+  const url = `https://calling/webhook/${uniqueId}`;
+  
+  return { uniqueId, url };
+};
+
+function validateRegistrationInput(name, email, phone, password) {
+  const missing = [];
+  if (!name) missing.push("name");
+  if (!email) missing.push("email");
+  if (!phone) missing.push("phone");
+  if (!password) missing.push("password");
+
+  if (missing.length) {
+    const error = new Error(`Missing fields: ${missing.join(", ")}`);
+    error.statusCode = 400;
+    throw error;
+  }
+}
+
+
+async function checkUserExistence(email, phone) {
+  const existing = await Registration.findOne({
+    $or: [{ email: email.toLowerCase() }, { phone }],
+  });
+  if (existing) {
+    const error = new Error("User with this email or phone already exists");
+    error.statusCode = 403;
+    throw error;
+  }
+}
+
+
+function handleControllerError(err, res) {
+  console.error("Registration Error:", err.message);
+  const status = err.statusCode || (err.code === 11000 ? 409 : 500);
+  res.status(status).json({
+    success: false,
+    error: err.message || "Internal Server Error",
+  });
+}
+
+export async function createRegistration(req, res) {
+  try {
+    const { name, email, password, phone } = req.body || {};
+
+    // 1. Validate Input
+    validateRegistrationInput(name, email, phone, password);
+
+    // 2. Check for existing user (Email/Phone)
+    await checkUserExistence(email, phone);
+
+    // 3. Generate Webhook & Hash Password
+    const { uniqueId, url } = generateWebhookData(name);
+    const passwordHash = await bcrypt.hash(String(password), 10);
+
+    // 4. Save to Database
+    const newUser = await Registration.create({
+      name,
+      email: email.toLowerCase(),
+      phone,
+      password: passwordHash,
+      webhookId: uniqueId,
+      isSubscriptionActive: false,
+      isCallMade: false,
+    });
+
+    sendMail(newUser.email, newUser.name, url).catch(console.error);
+
+    return res.status(201).json({
+      success: true,
+      message: "Registered successfully",
+      data: {
+        userId: newUser._id,
+        webhookUrl: url,
+      },
+    });
+
+  } catch (err) {
+    handleControllerError(err, res);
+  }
+}
+
+
+
+
+
+
+
+export async function listRegistrations(_req, res) {
+  try {
+    const docs = await Registration.find().sort({ createdAt: -1 }).lean()
+    res.json(docs)
+  } catch (err) {
+    res.status(500).json({ error: err?.message || 'Server error' })
+  }
+}
