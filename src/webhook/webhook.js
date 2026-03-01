@@ -19,7 +19,7 @@ export const callingWebHook = asyncHandler(async (req, res) => {
   (async () => {
     console.log(`🚀 Processing Signal for ${user?.name} (${alertData?.symbol})`);
 
-    const result = await triggerTwilioCall(user?.phone, alertData);
+    const result = await triggerTwilioCall( user?.phone, alertData , user?.name);
 
     if (result.success) {
       // 5. Update Call Database Counters

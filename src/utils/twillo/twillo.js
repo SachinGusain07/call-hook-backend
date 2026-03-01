@@ -60,7 +60,7 @@ const client = twilio(
   process.env.TWILIO_AUTH_TOKEN
 );
 
-export const triggerTwilioCall = async (toPhone, alertData) => {
+export const triggerTwilioCall = async (toPhone, alertData , username) => {
   const { symbol, price, exchange, action } = alertData;
 
   try {
@@ -69,7 +69,7 @@ export const triggerTwilioCall = async (toPhone, alertData) => {
                        action?.toLowerCase() === "sell" ? "Sell signal" : "Price alert";
 
     // The core message
-    const message = `Attention. ${symbol} at ${formattedPrice}. ${actionText} triggered on ${exchange}.`;
+    const message = `Hello ${username} Attention. ${alertData}`;
 
     // Constructing TwiML to say the message 3 times
     const twiml = `
