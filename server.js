@@ -35,14 +35,14 @@ app.use(cookieParser())
 app.use(express.text());
 
 // Static files (uploaded payment screenshots)
-app.use(
-  '/uploads',
-  express.static('uploads', {
-    setHeaders(res) {
-      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin')
-    },
-  })
-)
+// app.use(
+//   '/uploads',
+//   express.static('uploads', {
+//     setHeaders(res) {
+//       res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin')
+//     },
+//   })
+// )
 
 
 // Health check
