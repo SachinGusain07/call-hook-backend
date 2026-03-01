@@ -5,7 +5,7 @@ import { triggerTwilioCall } from "../utils/twillo/twillo.js";
 export const callingWebHook = asyncHandler(async (req, res) => {
   const alertData = req.body;
 
-  console.log(req , "this is the req")
+  console.log(req.body , "this is the req")
   const user = req.webhookUser;
 
   console.log(alertData , "data")

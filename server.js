@@ -32,6 +32,7 @@ app.options(/.*/, cors(corsOptions))
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(cookieParser())
+app.use(express.text());
 
 // Static files (uploaded payment screenshots)
 app.use(
