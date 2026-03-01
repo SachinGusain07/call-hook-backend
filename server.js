@@ -30,7 +30,7 @@ app.use(
 app.use(cors(corsOptions))
 app.options(/.*/, cors(corsOptions))
 app.use(express.json())
-app.use(morgan('dev'))
+app.use(morgan("combined"));
 app.use(cookieParser())
 app.use(express.text());
 
