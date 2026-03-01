@@ -47,15 +47,15 @@ function handleControllerError(err, res) {
     error: err.message || "Internal Server Error",
   });
 }
+const expiryDate = new Date();
+expiryDate.setDate(expiryDate.getDate() + 15);
 
 export async function createRegistration(req, res) {
   try {
     const { name, email, password, phone } = req.body || {};
 
-    // 1. Validate Input
     validateRegistrationInput(name, email, phone, password);
 
-    // 2. Check for existing user (Email/Phone)
     await checkUserExistence(email, phone);
 
     // 3. Generate Webhook & Hash Password
@@ -69,6 +69,8 @@ export async function createRegistration(req, res) {
       phone,
       password: passwordHash,
       webhookId: uniqueId,
+        subscriptionValidUntil: expiryDate, // This is the calculated date
+
       isSubscriptionActive: false,
       isCallMade: false,
     });
@@ -88,10 +90,6 @@ export async function createRegistration(req, res) {
     handleControllerError(err, res);
   }
 }
-
-
-
-
 
 
 

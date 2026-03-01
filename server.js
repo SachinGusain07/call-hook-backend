@@ -7,7 +7,7 @@ import fs from 'node:fs/promises'
 import { connectDB } from './config/db.js'
 import { errorMiddleware } from './src/utils/error.js'
 import cookieParser from 'cookie-parser'
-import authRoute from './src/routes/authRoutes.js'
+import allRoute from './src/index.js'
 
 dotenv.config()
 
@@ -50,7 +50,7 @@ app.get('/health', (_req, res) => {
 })
 
 // API route
-app.use("/auth" , authRoute)
+app.use("/api/v1" , allRoute)
 
 app.get("/", (req, res) => {
   res.send("Hello from server ");

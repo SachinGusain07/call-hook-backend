@@ -11,7 +11,23 @@ const registrationSchema = new mongoose.Schema(
     // Logic fields
     webhookId: { type: String, trim: true },
     isSubscriptionActive: { type: Boolean, default: false },
-    isCallMade: { type: Boolean, default: false },
+        subscriptionValidUntil: { 
+      type: Date,
+      default: null 
+    },
+
+    totalCallMade: { 
+      type: Number, 
+      default: 0 
+    },
+    allowedCallMonthly: { 
+      type: Number, 
+      default: 2 
+    },
+    totalCallMadeMonthly: { 
+      type: Number, 
+      default: 0 
+    },
   },
   { timestamps: true }
 );
