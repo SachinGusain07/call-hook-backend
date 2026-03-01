@@ -3,7 +3,9 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { triggerTwilioCall } from "../utils/twillo/twillo.js";
 
 export const callingWebHook = asyncHandler(async (req, res) => {
-  const alertData = req.body; 
+  const alertData = req.body;
+
+  console.log(req , "this is the req")
   const user = req.webhookUser;
 
   console.log(alertData , "data")
@@ -15,16 +17,16 @@ export const callingWebHook = asyncHandler(async (req, res) => {
   });
 
   (async () => {
-    console.log(`🚀 Processing Signal for ${user.name} (${alertData.symbol})`);
+    console.log(`🚀 Processing Signal for ${user?.name} (${alertData?.symbol})`);
 
-    const result = await triggerTwilioCall(user.phone, alertData);
+    const result = await triggerTwilioCall(user?.phone, alertData);
 
     if (result.success) {
       // 5. Update Call Database Counters
-      await Registration.findByIdAndUpdate(user.id, {
+      await Registration.findByIdAndUpdate(user?.id, {
         $inc: { totalCallMade: 1, totalCallMadeMonthly: 1 }
       });
-      console.log(`✅ Database Updated for ${user.name}`);
+      console.log(`✅ Database Updated for ${user?.name}`);
     }
   })();
 });
