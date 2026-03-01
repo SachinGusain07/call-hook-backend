@@ -6,6 +6,8 @@ export const callingWebHook = asyncHandler(async (req, res) => {
   const alertData = req.body; 
   const user = req.webhookUser;
 
+  console.log(alertData , "data")
+
 
   res.status(200).json({
     status: true,
