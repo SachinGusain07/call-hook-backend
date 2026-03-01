@@ -64,7 +64,7 @@ app.use(errorMiddleware);
 // Start server after DB connects
 async function start() {
   try {
-    await fs.mkdir('uploads/payments', { recursive: true })
+    // await fs.mkdir('uploads/payments', { recursive: true })
     await connectDB()
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`✅ Server running at http://localhost:${PORT}`)
