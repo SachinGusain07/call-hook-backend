@@ -60,6 +60,7 @@ export async function createRegistration(req, res) {
 
     // 3. Generate Webhook & Hash Password
     const { uniqueId, url } = generateWebhookData(name);
+    console.log(url , "webhook");
     const passwordHash = await bcrypt.hash(String(password), 10);
 
     // 4. Save to Database
