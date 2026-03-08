@@ -7,7 +7,7 @@ import { Registration } from "../../models/Registration.js";
 export const generateWebhookData = (name) => {
   const cleanName = name.toLowerCase().replace(/[^a-z0-9]/g, "-"); 
   const uniqueId = `${cleanName}-${uuidv4()}`;
-  const url = `https://call-hook-backend.onrender.com/api/v1/webhook/${uniqueId}`;
+  const url = `http://147.93.19.161/api/v1/webhook/${uniqueId}`;
   
   return { uniqueId, url };
 };
